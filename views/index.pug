@@ -1,0 +1,48 @@
+extends indexlayout
+block content
+    section.bg
+        #banner
+            if error.length 
+                for er in error 
+                    .alert.alert-warning.alert-dismissible.fade.show(role='alert') 
+                        em #{error}
+                        button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+            if error_msg.length 
+                for err in error_msg 
+                    .alert.alert-warning.alert-dismissible.fade.show(role='alert') 
+                        em #{err}
+                        button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')  
+            img(src='./images/logo.svg', alt='KGL Logo', height='250px')
+            h3(style='\
+            color: #6a2510;\
+            font-weight: 900;\
+            font-size: 30px;\
+            padding: 20px;\
+            ')
+                | Dealers in Beans, Grain Maize, Soy Beans, Cowpeas.
+            button.btn.btn-primary.me-md-2.mb-2(data-mdb-toggle='modal', data-mdb-target='#newuser')
+                | Login
+    //- Login and Register Modal
+    #newuser.modal.fade(tabindex='-1', aria-labelledby='exampleModalLabel', aria-hidden='true')
+        .modal-dialog.modal-dialog-scrollable.modal-dialog-centered.modal-lg
+            .modal-content
+                .modal-header
+                    h5#exampleModalLabel.modal-title
+                        | Login
+                    button.btn-close(type='button', data-mdb-dismiss='modal', aria-label='Close')
+                .modal-body
+                    //- Pills content
+                    .tab-content
+                        #pills-login.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='tab-login')
+                            form(name='login', action='/', method='POST')
+                                //- Email input
+                                .form-floating.mb-3
+                                    input.form-control(type='email', required='', placeholder='', name='email')
+                                    label.form-label(for='email') Email or username
+                                //- Password input
+                                .form-floating.mb-3
+                                    input.form-control(type='password', required='', placeholder='', name='password')
+                                    label.form-label(for='password') Password
+                                //- Submit button
+                                button.btn.btn-primary.btn-block.mb-3(type='submit')
+                                    | Login

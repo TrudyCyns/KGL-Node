@@ -1,0 +1,97 @@
+extends dashlayout 
+block content
+    if success_msg.length 
+        for success in success_msg 
+            .alert.alert-success.alert-dismissible.fade.show(role='alert') 
+                em #{success} 
+                | View Credit Sale 
+                a.alert-link(href='/manager/creditsales') here...
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if errors 
+        for error in errors
+            .alert.alert-danger.alert-dismissible.fade.show(role='alert') 
+                em #{error.msg}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if error_msg.length 
+                for err in error_msg 
+                    .alert.alert-warning.alert-dismissible.fade.show(role='alert') 
+                        em #{err}
+                        button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    .row.m-1
+        h3.text-center Add Sale on Credit Details
+        .card.p-3 
+            form(name='csales', action='/manager/creditsales/new', method='POST')
+                form(name='csales', onsubmit='return credVal()')
+                    .row
+                        .col-12.col-md-3.mb-2
+                            small#errByrName
+                            .form-floating
+                                input.form-control(type='text', name='byrname', required='', placeholder='')
+                                label.form-label(for='byrname') Buyer&apos;s Name
+                        .col-12.col-md-3.mb-2
+                            small#errNin
+                            .form-floating
+                                input.form-control(type='text', name='nin', required='', placeholder='')
+                                label.form-label(for='nin') NIN
+                        .col-12.col-md-3.mb-2
+                            small#errLocation
+                            .form-floating
+                                input.form-control(type='text', name='location', required='', placeholder='')
+                                label.form-label(for='location') Location
+                        .col-12.col-md-3.mb-2
+                            small#errTelNo
+                            .form-floating
+                                input.form-control(type='tel', pattern='[0]{1}[7]{1}[0-9]{8}', name='telno' placeholder='0701123456', required)
+                                label.form-label(for='telno') Buyer&apos;s Contact
+                    .row
+                        .col-12.col-md-3.mb-2
+                            small#errProdName
+                            div
+                                label(for='prodname') Produce Name
+                                select.form-select(name='prodname')
+                                    option(value='', selected='') Choose option
+                                    if produce.length   
+                                        for prod in produce 
+                                            option(value=prod.prodname) #{prod.prodname} - #{prod.price}
+                        .col-12.col-md-3.mb-2
+                            div
+                                - const date = new Date()
+                                label(for='disdate') Date of Dispatch
+                                input.form-control(type='text', readonly='' required='', value=date, name='disdate')
+                        .col-12.col-md-3.mb-2
+                            div
+                                - const due = new Date((date.setDate(date.getDate()+90)))
+                                label(for='duedate') Due Date
+                                input.form-control(type='text', readonly='' value=due required='', name='duedate')
+                        .col-12.col-md-3.mb-2
+                            small#errProdType
+                            div
+                                label(for='pdtype') Type of Produce
+                                select.form-select(aria-label='Default select example', name='pdtype')
+                                    option(value='', selected) Choose Option
+                                    option(value='cereal') Cereal
+                                    option(value='other') Other
+                    .row
+                        .col-12.col-md-3.mb-2
+                            .form-floating
+                                input.form-control(type='number', min='10000', name='amtdue', required, placeholder='')
+                                label.form-label(for='amtdue') Amount Due (UGX)
+                        .col-12.col-md-3.mb-2
+                            .form-floating
+                                input.form-control(type='number', min='100', name='tonnage', required, placeholder='')
+                                label.form-label(for='tonnage') Tonnage (Kgs)
+                        .col.col-md-3.mb-2
+                            small#errAgtName
+                            .form-floating
+                                - const name = user.firstname
+                                input.form-control(type='text', name='agtname', placeholder='', value=name, required, readonly)
+                                label.form-label(for='agtname') Sales Agent&apos;s Name
+                        .col.col-md-3.mb-2
+                            .form-floating
+                                - const branch = user.branch
+                                input.form-control(type='text', name='brname', placeholder='', value=branch, required, readonly)
+                                label.form-label(for='brname') Branch
+
+                    .d-grid.gap-2.col-6.mx-auto
+                        button.m-2.btn.btn-success(type='submit') Save Details
+    script(src='/js/csaleVal.js')

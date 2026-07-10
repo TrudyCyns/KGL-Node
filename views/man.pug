@@ -1,0 +1,55 @@
+extends dashlayout 
+block content
+  h5 Hello, #{user.firstname}
+  //- Cards
+  .row
+    .col-sm-6.col-12.mb-2
+      .card
+        .card-body
+          .d-flex.justify-content-between.px-md-1
+            .align-self-center
+              i.fas.fas.fa-cart-plus.text-info.fa-3x
+            .text-end
+              h3 Produce Details
+              .d-flex.flex-column.flex-md-row
+                a.btn.btn-info.m-1(href='/manager/produce/new')
+                  | Add Produce
+                a.btn.btn-info.m-1(href='/manager/produce') View Procurement
+    .col-sm-6.col-12.mb-2
+      .card
+        .card-body
+          .d-flex.justify-content-between.px-md-1
+            .align-self-center
+              i.fas.fa-cash-register.text-success.fa-3x
+            .text-end
+              h3 Sales
+              .d-flex.flex-column.flex-md-row
+                a.btn.btn-success.m-1(href='/manager/sales/new')
+                  | Add Sale
+                a.btn.btn-success.m-1(href='/manager/sales') View Sales
+    .col-sm-6.col-12.mb-2
+      .card
+        .card-body
+          .d-flex.justify-content-between.px-md-1
+            .align-self-center
+              i.fas.fa-credit-card.text-warning.fa-3x
+            .text-end
+              h3 Deferred Sales
+              .d-flex.flex-column.flex-md-row
+                a.btn.btn-warning.m-1(href='/manager/creditsales/new')
+                  | Add Deferred Sale
+                a.btn.btn-warning.m-1(href='/manager/creditsales') View Deffered Sales
+    .col-sm-6.col-12.mb-2
+      .card
+        .card-body
+          .d-flex.justify-content-between.px-md-1
+            .align-self-center
+              i.fas.fa-users.text-info.fa-3x
+            .text-end
+              h3 Users
+              .d-flex.flex-column.flex-md-row
+                a.btn.btn-info.m-1(href='/manager/users/new')
+                  | Add User
+                a.btn.btn-info.m-1(href='/manager/users') View Users
+  //- MDB
+  script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.1.0/mdb.min.js')

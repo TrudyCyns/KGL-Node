@@ -1,0 +1,90 @@
+extends dashlayout 
+block content
+    if success_msg.length 
+        for success in success_msg 
+            .alert.alert-success.alert-dismissible.fade.show(role='alert') 
+                em #{success}
+                | View Produce 
+                a.alert-link(href='/manager/produce') here...
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if errors 
+        for error in errors
+            .alert.alert-danger.alert-dismissible.fade.show(role='alert') 
+                em #{error.msg}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if error_msg.length 
+                for err in error_msg 
+                    .alert.alert-warning.alert-dismissible.fade.show(role='alert') 
+                        em #{err}
+                        button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    .row
+        h3.text-center Add Procurement Details
+        .card.p-3    
+            form(name='produce', action='/manager/produce/new', method='POST')
+                #pdt-name.col-12.mb-2
+                    .form-floating
+                        input.form-control(type='text', name='prodname', onblur='pdtVal()', placeholder='', required='')
+                        label.form-label(for='prodname') Name of Produce
+                .row
+                    #pd-type.col-12.col-md-6.mb-2
+                        div
+                            label.form-label(for='prodtype') Type of Produce
+                            select.form-select(name='prodtype', onblur='typeVal()', required='')
+                                option(value='', selected='') Select Type
+                                option(value='cereal') Cereal
+                                option(value='other') Other
+                    #pd-time.col-12.col-md-6.mb-2
+                        div
+                            label.form-label(for='prodtime') Time of Produce (Quarters)
+                            select.form-select(onblur='timeVal()', name='prodtime')
+                                option(value='', selected='') Select option
+                                option(value='Q1') Quarter 1
+                                option(value='Q2') Quarter 2
+                                option(value='Q3') Quarter 3
+                                option(value='Q4') Quarter 4
+                .row
+                    #dlr-name.col.col-md-6.mb-2
+                        .form-floating
+                            input.form-control(type='text', name='dlrname', placeholder='', required='', onblur='dlrVal(2)')
+                            label(for='dlrname') Name of Dealer
+                    
+                    #dlr-type.col-12.col-md-6.mb-2
+                        div
+                            label(for='dlrtype') Type of Dealer
+                            select.form-select(onblur='dlrTypeVal()', name='dlrtype')
+                                option(value='', selected='') Choose option
+                                option(value='Individual') Individual
+                                option(value='Farm') Farm
+                                option(value='Company') Company
+                .row
+                    #ton-field.col-12.col-md-6.mb-2
+                        .form-floating
+                            input.form-control(type='number', min='100', name='tonnage', required='', placeholder='', onblur='tonVal()')
+                            label.form-label(for='tonnage') Tonnage (Kgs)
+                    .col-12.col-md-6.mb-2
+                        .form-floating
+                            input.form-control(type='number', min='10000', name='buyprice', placeholder='', required='')
+                            label.form-label(for='buyprice') Bought at (Ugx)
+                .row
+                    .col.col-md-6.mb-2
+                        .form-floating
+                            - const branch = user.branch
+                            input.form-control(type='text', name='brname', placeholder='', value=branch, required, readonly)
+                            label.form-label(for='brname') Branch
+                    .col-12.col-md-6.mb-2
+                        div
+                            label(for='procdate') Date of Procurement
+                            - const date = new Date()
+                            input.form-control(type='text', name='procdate', readonly='', required='', value=date)
+                .row
+                    #ptel-no.col-12.col-md-6.mb-2
+                        .form-floating
+                            input.form-control(type='tel', name='telno', pattern='[0]{1}[7]{1}[0-9]{8}', placeholder='', onblur='ptelNoVal()', required='')
+                            label.form-label(for='telno') Contact
+                    .col-12.col-md-6.mb-2
+                        .form-floating
+                            input.form-control(type='number', min='100', name='price', placeholder='', required='')
+                            label.form-label(for='price') Sell at (Ugx) 
+                .d-grid.gap-2.col-6.mx-auto
+                    button.m-2.btn.btn-success(type='submit') Save Details
+    script(src="/js/prodVal.js") 

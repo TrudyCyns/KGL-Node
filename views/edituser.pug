@@ -1,0 +1,57 @@
+extends dashlayout
+block content
+    if error_msg.length 
+        for err in error_msg 
+            .alert.alert-warning.alert-dismissible.fade.show(role='alert') 
+                em #{err}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if success_msg.length 
+        for success in success_msg 
+            .alert.alert-success.alert-dismissible.fade.show(role='alert') 
+                em #{success}. Return to 
+                a.alert-link(href='/director/users') Users
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if errors 
+        for error in errors
+            .alert.alert-danger.alert-dismissible.fade.show(role='alert') 
+                em #{error.msg}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    .row.m-1
+        h3.text-center Edit User
+        .card.p-3 
+            form(name='csales', action=`/manager/users/${usr._id}`, method='POST')
+                .row
+                    #first-name.col-md-6.mb-2
+                        .form-floating
+                            input.form-control.form-control-lg(type='text', name='firstname', value=usr.firstname, placeholder='', required='', onblur='fNameVal(2,15)')
+                            label.form-label(for='firstname') First Name
+                    #last-name.col-md-6.mb-2
+                        .form-floating
+                            input.form-control.form-control-lg(type='text', placeholder='', value=usr.lastname, required='', onblur='lNameVal(2,15)', name='lastname')
+                            label.form-label(for='lastname') Last Name
+                .row
+                    #user-role.col-12.col-md-6.mb-2
+                        div
+                            label.form-label(for='role') Role:
+                            select.form-select(name='role', onblur='roleVal()', required='')
+                                option(value='', selected) Select Role
+                                option(value='Manager') Manager
+                                option(value='Agent') Sales Agent
+                    #branchfield.col-8.col-md-6.mb-2
+                        div
+                            label.form-label(for='branch') Branch:
+                            select.form-select(name='branch', onblur='branchVal()', required='')
+                                option(value='', selected='') Select Branch
+                                option(value='Mattuga') Mattuga
+                                option(value='Maganjo') Maganjo
+                .row
+                    .col-md-6.mb-2.pb-2
+                        .form-floating
+                            input.form-control.form-control-lg(type='email', name='email', placeholder='', value=usr.email, required='')
+                            label.form-label(for='email') Email
+                    #tel-no.col-md-6.mb-2.pb-2
+                        .form-floating
+                            input.form-control.form-control-lg(type='tel', name='telno', pattern='[0]{1}[0-9]{9}', value=usr.telno, placeholder='0701234567', required='', onblur='telNoVal()')
+                            label.form-label(for='telno') Contact
+                button.btn.btn-warning(type='submit') Save Changes
+    script(src='/js/userVal.js')

@@ -1,0 +1,64 @@
+extends dashlayout
+block content
+    if success_msg.length 
+        for success in success_msg 
+            .alert.alert-success.alert-dismissible.fade.show(role='alert') 
+                em #{success}
+                | View Sale 
+                a.alert-link(href='/manager/sales') here...
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if errors 
+        for error in errors
+            .alert.alert-danger.alert-dismissible.fade.show(role='alert') 
+                em #{error.msg}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if error_msg.length 
+        for err in error_msg 
+            .alert.alert-warning.alert-dismissible.fade.show(role='alert') 
+                em #{err}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    .row
+        h3.text-center Sales Details
+        .table-responsive 
+            table.table.table-striped.bg-light.p-2.table-sm
+                thead
+                    tr
+                        th(scope='col') Produce Name
+                        th(scope='col') Tonnage
+                        th(scope='col') Amount Paid
+                        th(scope='col') Buyer
+                        th(scope='col') Sales Agent
+                        th(scope='col') Branch
+                        th(scope='col') Date
+                tbody
+                if user.role === 'Manager'
+                    if branchSales.length 
+                        each branchSale in branchSales
+                            tr
+                                td #{branchSale.prodname}
+                                td #{(branchSale.tonnage).toLocaleString('en-GB')}
+                                td #{(branchSale.amtpaid).toLocaleString('en-GB')}
+                                td #{branchSale.byrname}
+                                td #{branchSale.agtname}
+                                td #{branchSale.brname}
+                                - const date = branchSale.saledate.toLocaleString('en-GB', {day:'numeric', month:'short', year:'numeric'});
+                                td #{date}
+                                td
+                                    form(method="get" action=`/${branchSale._id}`) 
+                                        input(type="hidden", name="id", value=branchSale._id)
+                                        a.btn.btn-success.m-1(href=`${branchSale._id}`) Edit
+                                    form(method="post" action=`/manager/sales/delete/${branchSale._id}`) 
+                                        input(type="hidden", name="id", value=branchSale._id)
+                                        button.btn.btn-danger.m-1(type='submit') Delete
+                if user.role === 'Agent'
+                    if agentSales.length 
+                        each agentSale in agentSales
+                            tr
+                                td #{agentSale.prodname}
+                                td #{(agentSale.tonnage).toLocaleString('en-GB')}
+                                td #{(agentSale.amtpaid).toLocaleString('en-GB')}
+                                td #{agentSale.byrname}
+                                td #{agentSale.agtname}
+                                td #{agentSale.brname}
+                                - const date = agentSale.saledate.toLocaleString('en-GB', {day:'numeric', month:'short', year:'numeric'});
+                                td #{date}

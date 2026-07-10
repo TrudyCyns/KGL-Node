@@ -1,0 +1,87 @@
+extends dashlayout 
+block content
+    if success_msg.length 
+        for success in success_msg 
+            .alert.alert-success.alert-dismissible.fade.show(role='alert')
+                em #{success} 
+                | View User 
+                a.alert-link(href=`/director/users`) here...
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if error_msg.length 
+        for err in error_msg 
+            .alert.alert-warning.alert-dismissible.fade.show(role='alert') 
+                em #{err}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if errors 
+        for error in errors
+            .alert.alert-danger.alert-dismissible.fade.show(role='alert') 
+                em #{error.msg}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    .row.m-1
+        h3.text-center Add User Details
+        .card.p-3
+            form(name='register', action=`/director/users/new`, method='POST', onsubmit='return userVal()')
+                .row
+                    .col-md-6.mb-2
+                        small#errFName
+                        .form-floating
+                            input.form-control.form-control-lg(type='text', name='firstname', placeholder='', required='', value='')
+                            label.form-label(for='firstname') First Name
+                    .col-md-6.mb-2
+                        small#errLName
+                        .form-floating
+                            input.form-control.form-control-lg(type='text', placeholder='', required='', name='lastname')
+                            label.form-label(for='lastname') Last Name
+                if user.role == "Manager"
+                    .row
+                        .col-md-6.mb-2
+                            div 
+                                label(for='role') Role: 
+                                input.form-control.form-control-lg(type='text', value='Agent', readonly='', name='role')
+                        .col-md-6.mb-2.pb-2
+                            .form-floating
+                                - const branch = user.branch
+                                input.form-control.form-control-lg(type='text', name='branch', readonly, value=branch)
+                                label.form-label(for='branch') Branch
+                else    
+                    .row
+                        .col-12.col-md-6.mb-2
+                            small#errRole
+                            div
+                                label.form-label(for='role') Role:
+                                select.form-select(name='role', required='')
+                                    option(value='', selected='') Select Role
+                                    option(value='Manager') Manager
+                                    option(value='Agent') Sales Agent
+                        .col-8.col-md-6.mb-2
+                            small#errBranch
+                            div
+                                label.form-label(for='branch') Branch:
+                                select.form-select(name='branch', required='')
+                                    option(value='', selected='') Select Branch
+                                    option(value='Mattuga') Mattuga
+                                    option(value='Maganjo') Maganjo
+                .row
+                    .col-md-6.mb-2.pb-2
+                        .form-floating
+                            input.form-control.form-control-lg(type='email', name='email', placeholder='', required='')
+                            label.form-label(for='email') Email
+                    .col-md-6.mb-2.pb-2
+                        small#errTelNo
+                        .form-floating
+                            input.form-control.form-control-lg(type='tel', name='telno', pattern='[0]{1}[0-9]{9}', placeholder='0701234567', required)
+                            label.form-label(for='telno') Contact
+                .row
+                    .col-md-6.mb-2.pb-2
+                        small#errPwd
+                        .form-floating
+                            input.form-control.form-control-lg(type='password', name='password', placeholder='', required)
+                            label.form-label(for='password') Password
+                    .col-md-6.mb-2.pb-2
+                        small#errPwdConf
+                        .form-floating
+                            input.form-control.form-control-lg(type='password', name='passconf', placeholder='', required)
+                            label.form-label(for='passconf') Confirm Password 
+                .d-grid.gap-2.col-6.mx-auto
+                    button.m-2.btn.btn-success(type='submit') Save Details
+    script(src='/js/userVal.js')

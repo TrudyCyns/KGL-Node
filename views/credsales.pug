@@ -1,0 +1,75 @@
+extends dashlayout
+block content
+    if success_msg.length 
+        for success in success_msg 
+            .alert.alert-success.alert-dismissible.fade.show(role='alert') 
+                em #{success}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if errors 
+        for error in errors
+            .alert.alert-danger.alert-dismissible.fade.show(role='alert') 
+                em #{error.msg}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if error_msg.length 
+                for err in error_msg 
+                    .alert.alert-warning.alert-dismissible.fade.show(role='alert') 
+                        em #{err}
+                        button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    .row
+        h3.text-center Deferred Sales Details 
+        .table-responsive
+            table.table.table-striped.bg-light.p-2.table-sm
+                thead
+                    tr
+                        th(scope='col') Buyer
+                        th(scope='col') NIN
+                        th(scope='col') Location
+                        th(scope='col') Contact
+                        th(scope='col') Produce Name
+                        th(scope='col') Dispatch Date
+                        th(scope='col') Due Date
+                        th(scope='col') Tonnage
+                        th(scope='col') Amount Due
+                        th(scope='col') Sales Agent
+                tbody
+                if user.role === 'Manager'
+                    if branchCreds.length 
+                        each branchCred in branchCreds 
+                            tr
+                                td #{branchCred.byrname}
+                                td #{branchCred.nin}
+                                td #{branchCred.location}
+                                td #{branchCred.telno}
+                                td #{branchCred.prodname}
+                                - const disdate = branchCred.disdate.toLocaleString('en-GB', {day:'numeric', month:'short', year:'numeric'});
+                                td #{disdate}
+                                - const duedate = branchCred.duedate.toLocaleString('en-GB', {day:'numeric', month:'short', year:'numeric'});
+                                td #{duedate}
+                                td #{(branchCred.tonnage).toLocaleString('en-GB')}
+                                td #{(branchCred.amtdue).toLocaleString('en-GB')}
+                                td #{branchCred.agtname}
+                                td
+                                    form(method="get" action=`/creditsales/${branchCred._id}`) 
+                                        input(type="hidden", name="id", value=branchCred._id)
+                                        a.btn.btn-success.m-1(href=`creditsales/${branchCred._id}`) Edit
+                                    form(method="post" action=`/manager/creditsales/delete/${branchCred._id}`) 
+                                        input(type="hidden", name="id", value=branchCred._id)
+                                        button.btn.btn-danger.m-1(type='submit') Delete
+                if user.role === 'Agent'
+                    if agentCreds.length 
+                        each agentCred in agentCreds
+                            tr
+                                td #{agentCred.byrname}
+                                td #{agentCred.nin}
+                                td #{agentCred.location}
+                                td #{agentCred.telno}
+                                td #{agentCred.prodname}
+                                - const disdate = agentCred.disdate.toLocaleString('en-GB', {day:'numeric', month:'short', year:'numeric'});
+                                td #{disdate}
+                                - const duedate = agentCred.duedate.toLocaleString('en-GB', {day:'numeric', month:'short', year:'numeric'});
+                                td #{duedate}
+                                td #{(agentCred.tonnage).toLocaleString('en-GB')}
+                                td #{(agentCred.amtdue).toLocaleString('en-GB')}
+                                td #{agentCred.agtname}
+
+                                

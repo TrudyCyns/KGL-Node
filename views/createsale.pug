@@ -1,0 +1,70 @@
+extends dashlayout 
+block content
+    if success_msg.length 
+        for success in success_msg 
+            .alert.alert-success.alert-dismissible.fade.show(role='alert') 
+                em #{success}
+                | View Sale 
+                -const route = user.role.toLowerCase() 
+                a.alert-link(href=`/${route}/sales`) here...
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if errors 
+        for error in errors
+            .alert.alert-danger.alert-dismissible.fade.show(role='alert') 
+                em #{error.msg}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if error_msg.length 
+                for err in error_msg 
+                    .alert.alert-warning.alert-dismissible.fade.show(role='alert') 
+                        em #{err}
+                        button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    .row
+        h3.text-center Add Sale Details
+        .card.p-3 
+            form(name='sales', action='/manager/sales/new', method='POST')
+                .row
+                    #spdt-name.col-12.mb-2
+                        div
+                            label.form-label(for='prodname') Produce Name
+                            select.form-select(name='prodname', onblur='spdtVal()')
+                                option(value='', selected='') Choose option
+                                if produce.length   
+                                    for prod in produce 
+                                        option(value=prod.prodname) #{prod.prodname} - #{prod.price}        
+                .row
+                    .col-12.col-md-4.mb-2
+                        .form-floating
+                            input.form-control(type='number', min='100', value='',id='ton', name='tonnage', required='', placeholder='')
+                            label.form-label(for='tonnage') Tonnage (Kgs)
+                    .col-12.col-md-4.mb-2
+                        .form-floating
+                            input.form-control(type='number', min='10000',name='unit' required='', placeholder='')
+                            label.form-label(for='unit') Unit Price (Ugx)
+                    .col-12.col-md-4.mb-2
+                        .form-floating
+                            
+                            input.form-control(type='number', min='10000' name='amtpaid', required='', placeholder='', readonly onfocus='calcAmtPaid()')
+                            label.form-label(for='amtpaid') Amount Paid (Ugx)
+                .row
+                    #byr-name.col-12.col-md-3.mb-2
+                        .form-floating
+                            input.form-control(type='text', name='byrname', required='', placeholder='', onblur='byrVal(2)')
+                            label.form-label(for='byrname') Buyer&apos;s Name
+                    #agt-name.col-12.col-md-3.mb-2
+                        .form-floating
+                            - const name = user.firstname 
+                            input.form-control(type='text', value=name, required='', readonly, onblur='agtVal(2)', placeholder='' name='agtname')
+                            label.form-label(for='agtname') Sales Agent&apos;s Name
+                    .col.col-md-3.mb-2
+                        .form-floating
+                            - const branch = user.branch
+                            input.form-control(type='text', name='brname', placeholder='', value=branch, required, readonly)
+                            label.form-label(for='brname') Branch
+                    .col-12.col-md-3.mb-2
+                        div
+                            label(for='saledate') Date of Sale
+                            - const date = new Date()
+                            input.form-control(type='text', name='saledate', readonly='', required='', value=date)
+                .d-grid.gap-2.col-6.mx-auto
+                    button.m-2.btn.btn-success(type='submit') Save Details
+    script(src='/js/saleVal.js')

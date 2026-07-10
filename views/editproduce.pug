@@ -1,0 +1,38 @@
+extends dashlayout
+block content
+    if success_msg.length 
+        for success in success_msg 
+            .alert.alert-success.alert-dismissible.fade.show(role='alert') 
+                em #{success} 
+                | View Produce 
+                a.alert-link(href='/manager/produce') here...
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if errors 
+        for error in errors
+            .alert.alert-danger.alert-dismissible.fade.show(role='alert') 
+                em #{error.msg}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if error_msg.length 
+                for err in error_msg 
+                    .alert.alert-warning.alert-dismissible.fade.show(role='alert') 
+                        em #{err}
+                        button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    .row.m-1
+        h3.text-center Edit Produce
+        .card.p-3
+            form(name='produce', action=`/manager/produce/${produce._id}`, method='POST')
+                #pdt-name.col-12.mb-2
+                    .form-floating
+                        input.form-control(type='text', name='prodname', onblur='pdtVal()', placeholder='', value=produce.prodname, required='')
+                        label.form-label(for='prodname') Name of Produce
+                .row
+                    .col-12.col-md-6.mb-2
+                        .form-floating
+                            input.form-control(type='number', min='100', name='tonnage', value=produce.tonnage, required='', placeholder='')
+                            label.form-label(for='tonnage') Tonnage (Kgs)
+                    .col-12.col-md-6.mb-2
+                        .form-floating
+                            input.form-control(type='number', min='100', name='price', value=produce.price, placeholder='', required='')
+                            label.form-label(for='price') Sell at (Ugx)
+                button.btn.btn-warning(type='submit') Save Changes
+    script(src="/js/prodVal.js") 

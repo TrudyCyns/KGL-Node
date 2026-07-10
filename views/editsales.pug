@@ -1,0 +1,44 @@
+extends dashlayout
+block content
+    if success_msg.length 
+        for success in success_msg 
+            .alert.alert-success.alert-dismissible.fade.show(role='alert') 
+                em #{success} 
+                | View Sale 
+                a.alert-link(href='/manager/sales') here...
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if errors 
+        for error in errors
+            .alert.alert-danger.alert-dismissible.fade.show(role='alert') 
+                em #{error.msg}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if error_msg.length 
+                for err in error_msg 
+                    .alert.alert-warning.alert-dismissible.fade.show(role='alert') 
+                        em #{err}
+                        button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    .row
+        h3.text-center Edit sales
+        .card.p-3
+            form(name='sales', action=`/manager/sales/${sale._id}`, method='POST')
+                .row
+                    #spdt-name.col-12.mb-2
+                        .form-floating
+                            input.form-control(type='text', name='prodname', required='', placeholder='', value=sale.prodname, onblur='spdtVal()')
+                            label.form-label(for='prodname') Name of Produce
+                .row
+                    .col-12.col-md-6.mb-2
+                        .form-floating
+                            input.form-control(type='number', min='100', name='tonnage', value=sale.tonnage, required='', placeholder='')
+                            label.form-label(for='tonnage') Tonnage (Kgs)
+                    .col-12.col-md-6.mb-2
+                        .form-floating
+                            input.form-control(type='number', min='10000', name='price', value=sale.price, required='', placeholder='')
+                            label.form-label(for='price') Amount Paid (Ugx)
+                .row
+                    #byr-name.col-12.mb-2
+                        .form-floating
+                            input.form-control(type='text', name='byrname', value=sale.byrname, required='', placeholder='', onblur='byrVal(2)')
+                            label.form-label(for='byrname') Buyer&apos;s Name
+                button.btn.btn-warning(type='submit') Save Changes
+    script(src='/js/saleVal.js')

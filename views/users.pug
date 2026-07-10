@@ -1,0 +1,48 @@
+extends dashlayout
+block content
+    if error.length 
+        for er in error 
+            .alert.alert-warning.alert-dismissible.fade.show(role='alert') 
+                em #{error}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if error_msg.length 
+        for err in error_msg 
+            .alert.alert-warning.alert-dismissible.fade.show(role='alert') 
+                em #{err}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if success_msg.length 
+        for success in success_msg 
+            .alert.alert-success.alert-dismissible.fade.show(role='alert') 
+                em #{success}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    .row
+        h3.text-center Users Details
+        .table-responsive 
+            table.table.table-striped.bg-light.p-2.table-sm
+                thead
+                    tr
+                        th(scope='col') First Name
+                        th(scope='col') Last Name
+                        th(scope='col') Email
+                        th(scope='col') Branch
+                        th(scope='col') Role
+                        th(scope='col') Contact
+                tbody
+                if usrs.length 
+                    each usr in usrs 
+                        tr
+                            td #{usr.firstname}
+                            td #{usr.lastname}
+                            td #{usr.email}
+                            td #{usr.branch}
+                            td #{usr.role}
+                            td #{usr.telno}
+                            if user.role == 'Director'
+                                td
+                                    form(method="get" action=`/users/${usr._id}`) 
+                                        input(type="hidden", name="id", value=usr._id)
+                                        a.btn.btn-success.m-1(href=`users/${usr._id}`) Edit
+                                    - const route = user.role.toLowerCase()
+                                    form(method="post" action=`/${route}/users/delete/${usr._id}`) 
+                                        input(type="hidden", name="id", value=usr._id)
+                                        button.btn.btn-danger.m-1(type='submit') Delete

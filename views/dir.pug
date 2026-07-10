@@ -1,0 +1,67 @@
+extends dashlayout 
+block content
+  .row.m-1
+    h3.text-center Reports 
+    .row.m-1   
+      if produce.length
+        .col-xl-4.col-6.mb-3
+          .card
+            .card-body
+              h3 Produce Report
+              .d-flex.flex-column 
+                ul.list-group.list-group-light.list-group-small
+                  li.list-group-item.px-4 Total Tonnage in Stock: 
+                    strong #{(totalProd.totalTonnage).toLocaleString('en-GB')} Kgs 
+                  - const totalExpense = (totalProd.totalBuy * totalProd.totalTonnage).toLocaleString('en-GB')
+                  li.list-group-item.px-4 Total Amount Spent on Procurement: 
+                    strong #{totalExpense} UGX
+                  - const totalIncome = (totalProd.totalPrice * totalProd.totalTonnage).toLocaleString('en-GB')
+                  li.list-group-item.px-4 Total Income Expected: 
+                    strong #{totalIncome} UGX             
+      else    
+        .card.m-1
+          .card-body    
+            p.card-text There are no Produce Records.
+      if sales.length
+        .col-xl-4.col-6.mb-3
+          .card
+            .card-body
+              h3 Sales Report
+              .d-flex.flex-column
+                ul.list-group.list-group-light.list-group-small
+                  li.list-group-item.px-4 Total Tonnage Sold: 
+                    strong #{(totalSales.totalTonnage).toLocaleString('en-GB')} Kgs 
+                  li.list-group-item.px-4 TOTAL Income: 
+                    strong #{(totalSales.totalAmount).toLocaleString('en-GB')} UGX
+      else
+        .card.m-1
+          .card-body    
+            p.card-text There are no Sales Records.
+      if creds.length
+        .col-xl-4.col-6.mb-3
+          .card
+            .card-body
+              h3 Sales on Credit Report
+              .d-flex.flex-column
+                ul.list-group.list-group-light.list-group-small
+                  li.list-group-item.px-4 Total Amount Due: 
+                    strong #{(totalCred.totalAmount).toLocaleString('en-GB')} UGX
+      else    
+        .card.m-1
+          .card-body    
+            p.card-text There are no Sales on Credit Records.
+  //- Cards
+  .row.m-1
+    h3.text-center More Actions
+    .col-xl-6.col-12.mb-3
+      .card
+        .card-body
+          .d-flex.justify-content-between.px-md-1
+            .align-self-center
+              i.fas.fa-users.text-info.fa-3x
+            .text-end
+              h3 Users
+              .d-flex.flex-column.flex-md-row
+                a.btn.btn-info.m-1(href='/director/users/new')
+                  | Add User
+                a.btn.btn-info.m-1(href='/director/users') View Users

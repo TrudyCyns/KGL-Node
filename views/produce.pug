@@ -1,0 +1,54 @@
+extends dashlayout
+block content
+    if success_msg.length 
+        for success in success_msg 
+            .alert.alert-success.alert-dismissible.fade.show(role='alert') 
+                em #{success}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if errors 
+        for error in errors
+            .alert.alert-danger.alert-dismissible.fade.show(role='alert') 
+                em #{error.msg}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if error_msg.length 
+                for err in error_msg 
+                    .alert.alert-warning.alert-dismissible.fade.show(role='alert') 
+                        em #{err}
+                        button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    .row
+        h3.text-center Procurement Details 
+        table.table.table-striped.bg-light.p-2.table-sm
+            thead
+                tr
+                    th(scope='col') Produce Name
+                    th(scope='col') Time
+                    th(scope='col') Date
+                    th(scope='col') Branch
+                    th(scope='col') Dealer
+                    th(scope='col') Contact
+                    th(scope='col') Tonnage
+                    th(scope='col') Bought At 
+                    th(scope='col') Sell At
+            tbody
+            if branchProcs.length 
+                each branchProc in branchProcs 
+                    tr
+                        td #{branchProc.prodname}
+                        td #{branchProc.prodtime}
+                        - const date = branchProc.procdate.toLocaleString('en-GB', {day:'numeric', month:'short', year:'numeric'});
+                        td #{date}
+                        td #{branchProc.brname}
+                        td #{branchProc.dlrname}
+                        td #{branchProc.telno}
+                        td #{branchProc.tonnage}
+                        td #{branchProc.buyprice}
+                        td #{branchProc.price}
+                        td
+                            form(method="get" action=`/produce/${branchProc._id}`) 
+                                input(type="hidden", name="id", value=branchProc._id)
+                                a.btn.btn-success.m-1(href=`produce/${branchProc._id}`) Edit
+                            //- const route = user.role.toLowerCase()
+                            form(method="post" action=`/manager/produce/delete/${branchProc._id}`) 
+                                    input(type="hidden", name="id", value=branchProc._id)
+                                    button.btn.btn-danger.m-1(type='submit') Delete
+                            

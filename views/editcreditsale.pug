@@ -1,0 +1,50 @@
+extends dashlayout
+block content
+    if success_msg.length 
+        for success in success_msg 
+            .alert.alert-success.alert-dismissible.fade.show(role='alert') 
+                em #{success} 
+                | View Credit Sale 
+                a.alert-link(href='/manager/creditsales') here...
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if errors 
+        for error in errors
+            .alert.alert-danger.alert-dismissible.fade.show(role='alert') 
+                em #{error.msg}
+                button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    if error_msg.length 
+                for err in error_msg 
+                    .alert.alert-warning.alert-dismissible.fade.show(role='alert') 
+                        em #{err}
+                        button.btn-close(type='button', data-bs-dismiss='alert', aria-label='Close')
+    .row.m-1
+        h3.text-center Edit Credit Sale 
+        .card.p-3 
+            form(name='csales', action=`/manager/creditsales/${creditSale._id}`, method='POST', onsubmit='return credVal()')
+                .row
+                    .col-12.col-md-4.mb-2
+                        small#errByrName
+                        .form-floating
+                            input.form-control(type='text', name='byrname', required='', placeholder='', value=creditSale.byrname)
+                            label.form-label(for='byrname') Buyer&apos;s Name
+                    .col-12.col-md-4.mb-2
+                        small#errLocation
+                        .form-floating
+                            input.form-control(type='text', name='location', required='', placeholder='',value=creditSale.location)
+                            label.form-label(for='location') Location
+                    .col-12.col-md-4.mb-2
+                        small#errTelNo
+                        .form-floating
+                            input.form-control(type='tel', pattern='[0]{1}[7]{1}[0-9]{8}', name='telno' placeholder='0701123456',value=creditSale.telno, required)
+                            label.form-label(for='telno') Buyer&apos;s Contact
+                .row
+                    .col-12.col-md-6.mb-2
+                        .form-floating
+                            input.form-control(type='number', min='10000', name='amtdue', value=creditSale.amtdue, required='', placeholder='')
+                            label.form-label(for='amtdue') Amount Due (UGX)
+                    .col-12.col-md-6.mb-2
+                        .form-floating
+                            input#prodname.form-control(type='text', placeholder='', value=creditSale.prodname, required='')
+                            label.form-label(for='prodname') Name of Produce   
+                button.btn.btn-warning(type='submit') Save Changes
+    script(src='/js/csaleVal.js')

@@ -1,0 +1,34 @@
+extends dashlayout 
+block content
+  h5 Hello, #{user.firstname}
+  //- Cards
+  .row.m-1
+    .col-sm-6.col-12.mb-2
+      .card
+        .card-body
+          .d-flex.justify-content-between.px-md-1
+            .align-self-center
+              i.fas.fa-cash-register.text-success.fa-3x
+            .text-end
+              h3 Sales
+              .d-flex.flex-column.flex-md-row
+                a.btn.btn-success.m-1(href='/agent/sales/new')
+                  | Add Sale
+                a.btn.btn-success.m-1(href='/agent/sales') View Sales
+    .col-sm-6.col-12.mb-2
+      .card
+        .card-body
+          .d-flex.justify-content-between.px-md-1
+            .align-self-center
+              i.fas.fa-credit-card.text-warning.fa-3x
+            .text-end
+              h3 Deferred Sales
+              .d-flex.flex-column.flex-md-row
+                a.btn.btn-warning.m-1(href='/agent/creditsales/new')
+                  | Add Deferred Sale
+                a.btn.btn-warning.m-1(href='/agent/creditsales') View Deffered Sales
+
+
+  //- MDB
+  script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.1.0/mdb.min.js')
+  script(src='/js/salesVal.js')
