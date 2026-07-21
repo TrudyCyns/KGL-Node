@@ -1,5 +1,5 @@
 const express = require('express'),
-  path = require('path'),
+  path = require('node:path'),
   mongoose = require('mongoose'),
   passport = require('passport'),
   flash = require('connect-flash');
@@ -69,11 +69,7 @@ app.use('/agent', ensureAuthenticated, agentRoutes);
 
 // handling non existing routes
 app.get('*', (req, res) => {
-  res.status(404).render('error', {
-    title: 'Error',
-    status: 'Fail',
-    error: 'Wrong Address Entered.',
-  });
+  res.sendFile(path.join(__dirname, '/public/error.html'))
 });
 
 // Setting Server Port
