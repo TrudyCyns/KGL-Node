@@ -1,41 +1,41 @@
+const path = require('node:path');
+
 const Sale = require('./../models/Sale');
 
-exports.getAllSales = async (req, res) => {
+exports.getAllSales = (req, res) => {
   try {
+    /*
+    TODO: API layer
+
+
     const user = req.session.user;
     let branchSales, agentSales;
     if (user.role === 'Manager') {
       branchSales = await Sale.find().where('brname').equals(user.branch);
     } else if (user.role === 'Agent') {
       agentSales = await Sale.find().where('agtname').equals(user.firstname);
-    }
+    */
 
-    res.status(200).render('sales', {
-      title: 'Sales',
-      user,
-      branchSales,
-      agentSales,
-    });
+    res.sendFile(path.join(__dirname, '../src/protected-pages/sales.html'));
   } catch (err) {
     req.flash('error_message', 'Failed to update Sales Records.');
     res.redirect('back');
   }
 };
 
-exports.getSale = async (req, res) => {
+exports.getSale = (req, res) => {
   try {
-    const sale = await Sale.findById(req.params.id);
 
-    if (!sale) {
-      req.flash('error_message', 'The requested record does not exist.');
-      res.redirect('back');
-    }
+    // TODO: API layer
 
-    res.status(201).render('editsales', {
-      sale,
-      title: 'Edit Sale',
-      user: req.session.user
-    });
+    // const sale = await Sale.findById(req.params.id);
+
+    // if (!sale) {
+    //   req.flash('error_message', 'The requested record does not exist.');
+    //   res.redirect('back');
+    // }
+
+    res.sendFile(path.join(__dirname, '../src/protected-pages/editsales.html'));
   } catch (err) {
     req.flash('error_message', 'Failed to retrieve Sale Record.');
     res.redirect('back');

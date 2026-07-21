@@ -28,9 +28,7 @@
     "mongodb": "^7.5.0",
     "mongoose": "^6.4.1",
     "passport": "^0.6.0",
-    "passport-local": "^1.0.0",
-    "pug": "^3.0.2",
-    "with": "^7.0.2"
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.19"

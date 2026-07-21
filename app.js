@@ -43,10 +43,6 @@ db.on('error', function (err) {
   console.error(err);
 });
 
-// View Engine Configuration
-app.set('view engine', 'pug');
-app.set('views', './views');
-
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));

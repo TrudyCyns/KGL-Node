@@ -1,7 +1,12 @@
+const path = require('node:path');
+
 const CreditSale = require('./../models/CreditSale');
 
-exports.getAllCreditSale = async (req, res) => {
+exports.getAllCreditSale = (req, res) => {
   try {
+    /*
+    TODO: API Layer
+
     const user = req.session.user;
     let branchCreds, agentCreds;
 
@@ -10,31 +15,31 @@ exports.getAllCreditSale = async (req, res) => {
     } else if (user.role === 'Agent') {
       agentCreds = await CreditSale.find().where('agtname').equals(user.firstname);
     }
+    */
 
-    res.status(200).render('credsales', {
-      title: 'Credit Sale',
-      user, branchCreds, agentCreds
-    });
+    res.sendFile(path.join(__dirname, '../src/protected-pages/credsales.html'));
   } catch (err) {
     req.flash('error_message', 'Failed to retrieve Sale on Credit Records.');
     res.redirect('back');
   }
 };
 
-exports.getCreditSale = async (req, res) => {
+exports.getCreditSale = (req, res) => {
   try {
+    /*
+    TODO: API Layer
+    
     const creditSale = await CreditSale.findById(req.params.id);
 
     if (!creditSale) {
       req.flash('error_message', 'The requested record does not exist.');
       res.redirect('back');
     }
+    */
 
-    res.status(200).render('editcreditsale', {
-      creditSale,
-      title: 'Edit Credit Sale',
-      user: req.session.user
-    });
+    res.sendFile(
+      path.join(__dirname, '../src/protected-pages/editcreditsale.html'),
+    );
   } catch (err) {
     req.flash('error_message', 'Failed to retrieve Sale on Credit Record.');
     res.redirect('back');
@@ -53,7 +58,7 @@ exports.createCreditSale = async (req, res) => {
   }
 };
 
-exports.updateCreditSale = async (req, res, next) => {
+exports.updateCreditSale = async (req, res) => {
   try {
     await CreditSale.findByIdAndUpdate(req.params.id, req.body, {
       new: true,

@@ -1,36 +1,23 @@
 const express = require('express');
+const path = require('node:path');
 
 const credsalesController = require('./../controllers/credsalesController'),
   salesController = require('./../controllers/salesController');
 
-  const Produce = require('./../models/Produce');
-
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  res.render('agt', { title: 'Agent', user: req.session.user });
+  res.sendFile(path.join(__dirname, '../src/protected-pages/agt.html'));
 });
 
-router.get('/sales/new', async (req, res) => {
-  const user = req.session.user
-  const produce = await Produce.find().where('brname').equals(user.branch);
-
-  res.render('createsale', {
-    title: 'Create Sale',
-    user,
-    produce,
-  });
+router.get('/sales/new', (req, res) => {
+  res.sendFile(path.join(__dirname, '../src/protected-pages/createsale.html'));
 });
 
-router.get('/creditsales/new', async (req, res) => {
-  const user = req.session.user
-  const produce = await Produce.find().where('brname').equals(user.branch);
-
-  res.render('createcredsale', {
-    title: 'Create Credit Sale',
-    produce,
-    user,
-  });
+router.get('/creditsales/new', (req, res) => {
+  res.sendFile(
+    path.join(__dirname, '../src/protected-pages/createcredsale.html'),
+  );
 });
 
 // ROUTES
@@ -44,8 +31,6 @@ router
   .route('/creditsales')
   .get(credsalesController.getAllCreditSale)
   .post(credsalesController.createCreditSale);
-router
-  .route('/creditsales/:id')
-  .get(credsalesController.getCreditSale);
+router.route('/creditsales/:id').get(credsalesController.getCreditSale);
 
 module.exports = router;

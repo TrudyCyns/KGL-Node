@@ -1,52 +1,35 @@
 const express = require('express');
-
-const Produce = require('./../models/Produce');
+const path = require('node:path');
 
 const produceController = require('./../controllers/produceController'),
   credsalesController = require('./../controllers/credsalesController'),
   salesController = require('./../controllers/salesController'),
   userController = require('./../controllers/userController');
 
-const { ensureAuthenticated } = require('./../config/auth');
-
-router = express.Router();
+const router = express.Router();
 
 router.get('/', (req, res) => {
-  res.render('man', { title: 'Manager', user: req.session.user });
+  res.sendFile(path.join(__dirname, '../src/protected-pages/man.html'));
 });
 
 router.get('/produce/new', (req, res) => {
-  res.render('createproduce', {
-    title: 'Create Produce',
-    user: req.session.user,
-  });
+  res.sendFile(
+    path.join(__dirname, '../src/protected-pages/createproduce.html'),
+  );
 });
 
-router.get('/sales/new', async (req, res) => {
-  const user = req.session.user;
-  const produce = await Produce.find().where('brname').equals(user.branch);
-
-  res.render('createsale', {
-    title: 'Create Sale',
-    user,
-    produce,
-  });
+router.get('/sales/new', (req, res) => {
+  res.sendFile(path.join(__dirname, '../src/protected-pages/createsale.html'));
 });
 
-router.get('/creditsales/new', async (req, res) => {
-  const user = req.session.user;
-  const produce = await Produce.find().where('brname').equals(user.branch);
-
-  res.render('createcredsale', {
-    title: 'Create Credit Sale',
-    produce,
-    user,
-    produce,
-  });
+router.get('/creditsales/new', (req, res) => {
+  res.sendFile(
+    path.join(__dirname, '../src/protected-pages/createcredsale.html'),
+  );
 });
 
-router.get('/users/new', async (req, res) => {
-  res.render('createuser', { title: 'Create User', user: req.session.user });
+router.get('/users/new', (req, res) => {
+  res.sendFile(path.join(__dirname, '../src/protected-pages/createuser.html'));
 });
 
 // ROUTES
