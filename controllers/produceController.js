@@ -1,31 +1,31 @@
+const path = require('node:path');
+
 const Produce = require('./../models/Produce');
 
-exports.getAllProduce = async (req, res) => {
+exports.getAllProduce = (req, res) => {
   try {
-    const user = req.session.user;
+    // TODO: API layer
 
-    let branchProcs = await Produce.find().where('brname').equals(user.branch)
+    // const user = req.session.user;
 
-    res.status(200).render('produce', {
-      branchProcs,
-      title: 'Produce',
-      user: req.session.user
-    });
+    // let branchProcs = await Produce.find().where('brname').equals(user.branch)
+
+    res.sendFile(path.join(__dirname, '../src/protected-pages/produce.html'));
   } catch (err) {
     req.flash('error_message', 'Failed to retrieve Procurement Records.');
     res.redirect('back');
   }
 };
 
-exports.getProduce = async (req, res) => {
+exports.getProduce = (req, res) => {
   try {
-    const produce = await Produce.findById(req.params.id);
+    // TODO: API layer
+    
+    // const produce = await Produce.findById(req.params.id);
 
-    res.status(201).render('editproduce', {
-      produce,
-      title: 'Edit Produce',
-      user: req.session.user
-    });
+    res.sendFile(
+      path.join(__dirname, '../src/protected-pages/editproduce.html'),
+    );
   } catch (err) {
     req.flash('error_message', 'Failed to retrieve Procurement Record.');
     res.redirect('back');

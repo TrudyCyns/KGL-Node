@@ -1,20 +1,24 @@
 const express = require('express');
+const path = require('node:path');
 
 const produceController = require('./../controllers/produceController'),
   credsalesController = require('./../controllers/credsalesController'),
   salesController = require('./../controllers/salesController'),
   userController = require('./../controllers/userController');
 
-const Produce = require('./../models/Produce'),
-  Sale = require('../models/Sale'),
-  CreditSale = require('../models/CreditSale');
-router = express.Router();
+const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', (req, res) => {
+  /* 
+   TODO(api-layer): Port these aggregations to a JSON API endpoint.
+   Original Pug-era logic — Produce/Sale/CreditSale totals for the
+   Director Reports panel.
+
   const produce = await Produce.find(),
     sales = await Sale.find(),
     creds = await CreditSale.find();
 
+   
   const totalProduce = await Produce.aggregate([
     {
       $group: {
@@ -54,11 +58,13 @@ router.get('/', async (req, res) => {
     produce,
     sales,
     creds,
-  });
+  });*/
+
+  res.sendFile(path.join(__dirname, '../src/protected-pages/dir.html'));
 });
 
-router.get('/users/new', async (req, res) => {
-  res.render('dcreateuser', { title: 'Create User', user: req.session.user });
+router.get('/users/new', (req, res) => {
+  res.sendFile(path.join(__dirname, '../src/protected-pages/dcreateuser.html'));
 });
 
 // ROUTES

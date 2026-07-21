@@ -1,32 +1,27 @@
 const User = require('./../models/User');
+const path = require('node:path');
+
+// NOTE: The try-catch blocks will matter once the API layer is implemented
 
 // Get all Users
-exports.getAllUsers = async (req, res) => {
+exports.getAllUsers = (req, res) => {
   try {
-    const usrs = await User.find();
-    res.status(200).render('users', {
-      usrs,
-      title: 'Users',
-      user: req.session.user,
-    });
+    // const usrs = await User.find();
+    res.sendFile(path.join(__dirname, '../src/protected-pages/users.html'));
   } catch (err) {
     res.status(404).send('Failed to retieve Credit Sales Details.');
   }
 };
 
-exports.getUser = async (req, res) => {
+exports.getUser = (req, res) => {
   try {
-    const usr = await User.findById(req.params.id);
+    // const usr = await User.findById(req.params.id);
 
-    res.status(200).render('edituser', {
-      usr,
-      title: 'Edit User',
-      user: req.session.user
-    });
+    res.sendFile(path.join(__dirname, '../src/protected-pages/edituser.html'));
   } catch (err) {
     res.status(404).json({
       status: 'fail',
-      message: err,
+      message: 'Failed to get User.',
     });
   }
 };
@@ -44,60 +39,52 @@ exports.createUser = async (req, res, next) => {
   } = req.body;
   let errors = [];
 
-  if (errors.length > 0) {
-    res.render('createuser', {
-      title: 'Create User',
-      errors,
-      firstname,
-      lastname,
-      role,
-      email,
-      telno,
-      branch,
-      password,
-      passconf,
-    });
-  } else {
-    User.findOne({ email }).then((usr) => {
-      if (usr) {
-        errors.push({ msg: 'Email already exists' });
-        res.render('createuser', {
-          title: 'Create User',
-          errors,
-          firstname,
-          lastname,
-          role,
-          email,
-          telno,
-          branch,
-          password,
-          passconf,
-          user: req.session.user,
+  User.findOne({ email }).then((usr) => {
+    if (usr) {
+      errors.push({ msg: 'Email already exists' });
+
+      req.flash('error_msg', 'User Not Created');
+      res.status(400).redirect('back');
+      /*
+      TODO: POST failure eith dynamis error message pending API creation.
+
+      res.render('createuser', {
+        title: 'Create User',
+        errors,
+        firstname,
+        lastname,
+        role,
+        email,
+        telno,
+        branch,
+        password,
+        passconf,
+        user: req.session.user,
+      });
+      */
+    } else {
+      const newUser = new User({
+        firstname,
+        lastname,
+        role,
+        email,
+        telno,
+        branch,
+        password,
+        passconf,
+      });
+      newUser
+        .save()
+        .then((usr) => {
+          req.flash('success_msg', 'User Successfully Created');
+          res.redirect('back');
+        })
+        .catch((err) => {
+          req.flash('error_msg', 'User Creation Failed');
+          res.status(400).redirect('back');
         });
-      } else {
-        const newUser = new User({
-          firstname,
-          lastname,
-          role,
-          email,
-          telno,
-          branch,
-          password,
-          passconf,
-        });
-        newUser
-          .save()
-          .then((usr) => {
-            req.flash('success_msg', 'User Successfully Created');
-            res.redirect('back');
-          })
-          .catch((err) => {
-            req.flash('error_msg', 'User Creation Failed');
-            res.status(400).redirect('back');
-          });
-      }
-    });
-  }
+    }
+  });
 };
 
 exports.updateUser = async (req, res) => {
@@ -115,7 +102,7 @@ exports.updateUser = async (req, res) => {
       {
         new: true,
         runValidators: true,
-      }
+      },
     );
     req.flash('success_msg', 'User Details Successfully Updated');
     res.redirect('back');

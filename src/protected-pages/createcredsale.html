@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="40x40" href="/images/favicon.png">
+  <title>Add Credit Sale | KGL</title>
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+  <!-- BootStrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+  <!-- MDB -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.1.0/mdb.min.css" rel="stylesheet">
+  <!-- Personal CSS -->
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- Main Navigation -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+      <div class="container">
+        <a class="navbar-brand mt-2 mt-lg-0" href="">
+          <img src="/images/KGLogo.svg" alt="KGL Logo" loading="lazy" height="20">
+        </a>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/manager">Dashboard</a>
+          </li>
+        </ul>
+        <div class="d-flex align-items-center">
+          <a class="dropdown-item" href="/logout">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <div class="container-lg">
+      <!-- Flash messages (success_msg / error_msg / errors) render here when present -->
+      <div class="row m-1">
+        <h3 class="text-center">Add Sale on Credit Details</h3>
+        <div class="card p-3">
+          <form name="csales" action="/manager/creditsales/new" method="POST" onsubmit="return credVal()">
+            <div class="row">
+              <div class="col-12 col-md-3 mb-2">
+                <small id="errByrName"></small>
+                <div class="form-floating">
+                  <input class="form-control" type="text" name="byrname" required placeholder="">
+                  <label class="form-label" for="byrname">Buyer's Name</label>
+                </div>
+              </div>
+              <div class="col-12 col-md-3 mb-2">
+                <small id="errNin"></small>
+                <div class="form-floating">
+                  <input class="form-control" type="text" name="nin" required placeholder="">
+                  <label class="form-label" for="nin">NIN</label>
+                </div>
+              </div>
+              <div class="col-12 col-md-3 mb-2">
+                <small id="errLocation"></small>
+                <div class="form-floating">
+                  <input class="form-control" type="text" name="location" required placeholder="">
+                  <label class="form-label" for="location">Location</label>
+                </div>
+              </div>
+              <div class="col-12 col-md-3 mb-2">
+                <small id="errTelNo"></small>
+                <div class="form-floating">
+                  <input class="form-control" type="tel" pattern="[0]{1}[7]{1}[0-9]{8}" name="telno" placeholder="0701123456" required>
+                  <label class="form-label" for="telno">Buyer's Contact</label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 col-md-3 mb-2">
+                <small id="errProdName"></small>
+                <div>
+                  <label for="prodname">Produce Name</label>
+                  <select class="form-select" name="prodname">
+                    <option value="" selected>Choose option</option>
+                    <option value="Maize">Maize - 1900</option>
+                    <option value="Beans">Beans - 3000</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-md-3 mb-2">
+                <div>
+                  <label for="disdate">Date of Dispatch</label>
+                  <input class="form-control" type="text" readonly required value="18 Jul 2026" name="disdate">
+                </div>
+              </div>
+              <div class="col-12 col-md-3 mb-2">
+                <div>
+                  <label for="duedate">Due Date</label>
+                  <input class="form-control" type="text" readonly value="15 Oct 2026" required name="duedate">
+                </div>
+              </div>
+              <div class="col-12 col-md-3 mb-2">
+                <small id="errProdType"></small>
+                <div>
+                  <label for="pdtype">Type of Produce</label>
+                  <select class="form-select" aria-label="Default select example" name="pdtype">
+                    <option value="" selected>Choose Option</option>
+                    <option value="cereal">Cereal</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 col-md-3 mb-2">
+                <div class="form-floating">
+                  <input class="form-control" type="number" min="10000" name="amtdue" required placeholder="">
+                  <label class="form-label" for="amtdue">Amount Due (UGX)</label>
+                </div>
+              </div>
+              <div class="col-12 col-md-3 mb-2">
+                <div class="form-floating">
+                  <input class="form-control" type="number" min="100" name="tonnage" required placeholder="">
+                  <label class="form-label" for="tonnage">Tonnage (Kgs)</label>
+                </div>
+              </div>
+              <div class="col col-md-3 mb-2">
+                <small id="errAgtName"></small>
+                <div class="form-floating">
+                  <input class="form-control" type="text" name="agtname" placeholder="" value="Grace" required readonly>
+                  <label class="form-label" for="agtname">Sales Agent's Name</label>
+                </div>
+              </div>
+              <div class="col col-md-3 mb-2">
+                <div class="form-floating">
+                  <input class="form-control" type="text" name="brname" placeholder="" value="Mattuga" required readonly>
+                  <label class="form-label" for="brname">Branch</label>
+                </div>
+              </div>
+            </div>
+            <div class="d-grid gap-2 col-6 mx-auto">
+              <button class="m-2 btn btn-success" type="submit">Save Details</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <script src="/js/csaleVal.js"></script>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <footer>
+    <div class="text-center text-white p-2 position-fixed bottom-0 end-0" style="background-color: rgba(0, 0, 0, 0.4);">KGL Ltd &copy; 2022 | Gertrude Nabasirye</div>
+  </footer>
+</body>
+</html>
