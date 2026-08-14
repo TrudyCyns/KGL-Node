@@ -5,7 +5,7 @@ const express = require('express'),
   flash = require('connect-flash');
 require('dotenv').config();
 
-const { ensureAuthenticated } = require('./config/auth');
+const { ensureAuthenticated, requireRole } = require('./config/auth');
 
 // Express Session
 const expressSession = require('express-session')({
@@ -24,7 +24,8 @@ const User = require('./models/User');
 const homeRoutes = require('./routes/homeroutes'),
   managerRoutes = require('./routes/managerroutes'),
   directorRoutes = require('./routes/directorroutes'),
-  agentRoutes = require('./routes/agentroutes');
+  agentRoutes = require('./routes/agentroutes'),
+  apiRoutes = require('./routes/apiRoutes');
 
 const app = express();
 
@@ -63,13 +64,24 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/', homeRoutes);
-app.use('/manager', ensureAuthenticated, managerRoutes);
-app.use('/director', ensureAuthenticated, directorRoutes);
-app.use('/agent', ensureAuthenticated, agentRoutes);
+app.use(
+  '/manager',
+  ensureAuthenticated,
+  requireRole('Manager', 'Director'),
+  managerRoutes,
+);
+app.use(
+  '/director',
+  ensureAuthenticated,
+  requireRole('Director'),
+  directorRoutes,
+);
+app.use('/agent', ensureAuthenticated, requireRole('Agent'), agentRoutes);
+app.use('/api', ensureAuthenticated, apiRoutes);
 
 // handling non existing routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/public/error.html'))
+  res.sendFile(path.join(__dirname, '/public/error.html'));
 });
 
 // Setting Server Port
