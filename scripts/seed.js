@@ -13,14 +13,14 @@ async function seed() {
   // 2. Call User.create({...}) with a full set of fields.
   try {
     const seedUser = await User.create({
-      firstname: 'Agent',
-      lastname: 'Zero',
+      firstname: 'Jane',
+      lastname: 'Doe',
       role: 'Agent',
-      email: 'agent_zero@kgl.com',
+      email: 'jane.doe@kgl.com',
       telno: '0701234567',
       branch: 'Mattuga',
-      password: 'agent_0000',
-      passconf: 'agent_0000',
+      password: 'janedoe.123',
+      passconf: 'janedoe.123',
     });
 
     console.log(`User Created: ${seedUser.email}`);
